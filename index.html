@@ -196,16 +196,71 @@
   .footer-badges { display:flex; gap:14px; }
   .f-badge { font-family:'Space Mono',monospace; font-size:0.58rem; color:rgba(168,180,204,0.4); border:1px solid rgba(168,180,204,0.15); padding:4px 10px; border-radius:3px; }
 
+  /* HAMBURGER */
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; background:none; border:none; z-index:210; }
+  .hamburger span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; transition:all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity:0; }
+  .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display:none; position:fixed; top:60px; left:0; right:0; bottom:0; z-index:190; background:rgba(6,11,24,0.98); backdrop-filter:blur(24px); flex-direction:column; align-items:center; justify-content:center; gap:32px; border-top:1px solid var(--border); }
+  .mobile-menu.open { display:flex; }
+  .mobile-menu a { color:var(--white); text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:4px; transition:color 0.2s; }
+  .mobile-menu a:hover, .mobile-menu a.active { color:var(--cyan); }
+  .mobile-menu .mob-cta { background:var(--blue); padding:14px 40px; border-radius:6px; border:1px solid rgba(0,212,255,0.3); }
+
+  /* TABLET */
   @media(max-width:1024px) {
-    nav { padding:0 24px; }
-    .hero { grid-template-columns:1fr; padding:60px 24px; }
+    nav { padding:0 32px; }
+    nav ul { gap:20px; }
+    .hero { grid-template-columns:1fr; padding:70px 32px 60px; }
     .hero-right { display:none; }
     .stats-bar { grid-template-columns:repeat(2,1fr); }
-    .section { padding:70px 24px; }
-    .why-grid,.plans-row,.testi-grid { grid-template-columns:1fr; }
-    .cta-banner { margin:0 24px 60px; padding:40px 32px; flex-direction:column; text-align:center; }
+    .section { padding:70px 32px; }
+    .why-grid { grid-template-columns:repeat(2,1fr); }
+    .plans-row,.testi-grid { grid-template-columns:1fr 1fr; }
+    .cta-banner { margin:0 32px 60px; padding:44px 40px; flex-direction:column; text-align:center; }
+    .cta-banner-btns { flex-direction:column; width:100%; }
     .footer-grid { grid-template-columns:1fr 1fr; gap:36px; }
-    footer { padding:48px 24px 28px; }
+    footer { padding:48px 32px 28px; }
+  }
+
+  /* MOBILE */
+  @media(max-width:767px) {
+    nav { padding:0 20px; height:60px; }
+    nav ul { display:none; }
+    .hamburger { display:flex; }
+
+    .ticker { margin-top:60px; }
+    .tick-item { padding:0 28px; font-size:0.62rem; }
+
+    .hero { padding:52px 20px 52px; min-height:auto; }
+    .hero h1 { font-size:clamp(3.5rem,14vw,6rem); }
+    .hero-desc { font-size:0.9rem; margin:20px 0 32px; }
+    .cta-row { flex-direction:column; gap:12px; }
+    .btn-primary, .btn-ghost { width:100%; text-align:center; display:block; padding:16px 24px; box-sizing:border-box; }
+
+    .stats-bar { grid-template-columns:repeat(2,1fr); }
+    .stat-item { padding:28px 16px; }
+    .stat-num { font-size:2.2rem; }
+    .stat-lbl { font-size:0.56rem; }
+
+    .section { padding:52px 20px; }
+    .section-title { font-size:clamp(2rem,9vw,3rem); }
+    .why-grid { grid-template-columns:1fr; gap:14px; }
+    .why-card { padding:28px 24px; }
+    .plans-row { grid-template-columns:1fr; gap:16px; }
+    .testi-grid { grid-template-columns:1fr; gap:14px; }
+
+    .cta-banner { margin:0 16px 52px; padding:36px 24px; border-radius:12px; flex-direction:column; text-align:center; }
+    .cta-banner h2 { font-size:1.9rem; }
+    .cta-banner p { font-size:0.82rem; }
+    .cta-banner-btns { flex-direction:column; width:100%; gap:10px; }
+    .cta-banner-btns a { text-align:center; display:block; }
+
+    footer { padding:40px 20px 24px; }
+    .footer-grid { grid-template-columns:1fr; gap:28px; }
+    .footer-bottom { flex-direction:column; gap:12px; align-items:flex-start; }
+    .footer-badges { display:none; }
   }
 </style>
 </head>
@@ -223,7 +278,16 @@
     <li><a href="invest.html">Invest</a></li>
     <li><a href="invest.html" class="nav-btn">Get Started</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html" class="active">Home</a>
+  <a href="store.html">Store</a>
+  <a href="invest.html">Invest</a>
+  <a href="invest.html" class="mob-cta">Get Started</a>
+</div>
 
 <!-- TICKER -->
 <div class="ticker">
@@ -482,6 +546,14 @@
     document.getElementById('inv-count').textContent = invCount.toLocaleString();
     document.getElementById('paid-out').textContent = '$' + paidOut.toLocaleString();
   }, 3500);
+
+  function toggleMenu() {
+    const h = document.getElementById('hamburger');
+    const m = document.getElementById('mobile-menu');
+    h.classList.toggle('open');
+    m.classList.toggle('open');
+    document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+  }
 </script>
 </body>
 </html>
