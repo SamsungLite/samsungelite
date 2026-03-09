@@ -171,17 +171,81 @@
   .modal-close-btn { background:var(--cyan); color:var(--navy); border:none; border-radius:6px; padding:14px 40px; font-family:'Sora',sans-serif; font-size:0.88rem; font-weight:700; cursor:pointer; letter-spacing:1px; transition:all 0.2s; }
   .modal-close-btn:hover { background:var(--white); }
 
+  /* HAMBURGER */
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; background:none; border:none; z-index:210; }
+  .hamburger span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; transition:all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity:0; }
+  .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display:none; position:fixed; top:60px; left:0; right:0; bottom:0; z-index:190; background:rgba(6,11,24,0.98); backdrop-filter:blur(24px); flex-direction:column; align-items:center; justify-content:center; gap:32px; border-top:1px solid var(--border); }
+  .mobile-menu.open { display:flex; }
+  .mobile-menu a { color:var(--white); text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:4px; transition:color 0.2s; }
+  .mobile-menu a:hover, .mobile-menu a.active { color:var(--cyan); }
+  .mobile-menu .mob-cta { background:var(--blue); padding:14px 40px; border-radius:6px; border:1px solid rgba(0,212,255,0.3); }
+
+  /* TABLET */
   @media(max-width:1024px) {
-    nav { padding:0 24px; }
-    .page-header { padding:100px 24px 52px; }
+    nav { padding:0 32px; }
+    .page-header { padding:100px 32px 52px; }
     .header-inner { grid-template-columns:1fr; }
-    .header-right { display:none; }
-    .plans-section, .reg-section, .faq-section { padding-left:24px; padding-right:24px; }
-    .plans-grid { grid-template-columns:1fr; }
+    .header-right { grid-template-columns:repeat(2,1fr); }
+    .plans-section, .reg-section, .faq-section { padding-left:32px; padding-right:32px; }
+    .plans-grid { grid-template-columns:1fr 1fr; gap:18px; }
     .reg-wrapper { grid-template-columns:1fr; }
     .reg-form-box { position:static; }
-    .footer-grid { grid-template-columns:1fr 1fr; gap:32px; } footer { padding:44px 24px 28px; }
-    .form-row { grid-template-columns:1fr; }
+    .footer-grid { grid-template-columns:1fr 1fr; gap:32px; }
+    footer { padding:44px 32px 28px; }
+    .form-row { grid-template-columns:1fr 1fr; }
+  }
+
+  /* MOBILE */
+  @media(max-width:767px) {
+    nav { padding:0 20px; height:60px; }
+    nav ul { display:none; }
+    .hamburger { display:flex; }
+
+    .page-header { padding:76px 20px 36px; }
+    .header-inner { grid-template-columns:1fr; gap:32px; }
+    .header-right { display:none; }
+    .page-title { font-size:clamp(3rem,13vw,5rem); }
+    .page-sub { font-size:0.88rem; }
+    .live-stats-row { gap:20px; flex-wrap:wrap; }
+    .ls-val { font-size:1.8rem; }
+
+    .plans-section, .reg-section, .faq-section { padding-left:16px; padding-right:16px; }
+    .plans-section { padding-top:52px; padding-bottom:52px; }
+    .section-title { font-size:clamp(2rem,9vw,3rem); }
+    .plans-grid { grid-template-columns:1fr; gap:16px; }
+    .plan-card { padding:28px 24px; }
+    .plan-amount { font-size:2.8rem; }
+    .daily-val { font-size:1.8rem; }
+    .featured-ribbon { font-size:0.52rem; padding:5px 12px; }
+
+    .reg-section { padding-top:0; padding-bottom:52px; }
+    .reg-wrapper { grid-template-columns:1fr; gap:32px; }
+    .reg-form-box { position:static; padding:28px 20px; border-radius:12px; }
+    .form-title { font-size:1.7rem; }
+    .form-row { grid-template-columns:1fr; gap:0; }
+    .selected-plan-display { padding:14px 16px; }
+    .spd-val { font-size:1.2rem; }
+    .spd-daily { font-size:1.5rem; }
+    .pp-val { font-size:2rem; }
+
+    .info-card { padding:22px 18px; }
+    .payment-methods { padding:22px 18px; }
+    .pm-grid { grid-template-columns:1fr 1fr; }
+
+    .faq-section { padding-bottom:52px; }
+    .faq-q { font-size:0.84rem; padding:16px 20px; }
+    .faq-a-inner { padding:0 20px 16px; font-size:0.8rem; }
+
+    footer { padding:40px 20px 24px; }
+    .footer-grid { grid-template-columns:1fr; gap:28px; }
+    .footer-bottom { flex-direction:column; gap:12px; align-items:flex-start; }
+    .footer-badges { display:none; }
+
+    .modal { padding:36px 20px; width:95%; }
+    .modal h2 { font-size:1.9rem; }
   }
 </style>
 </head>
@@ -199,7 +263,16 @@
     <li><a href="invest.html" class="active">Invest</a></li>
     <li><a href="#register" class="nav-btn">Get Started</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="store.html">Store</a>
+  <a href="invest.html" class="active">Invest</a>
+  <a href="#register" class="mob-cta" onclick="toggleMenu()">Get Started</a>
+</div>
 
 <!-- PAGE HEADER -->
 <div class="page-header">
@@ -560,6 +633,14 @@
     document.getElementById('lcount').textContent = lc.toLocaleString();
     document.getElementById('lpaid').textContent = '$' + lp.toLocaleString();
   }, 3500);
+
+  function toggleMenu() {
+    const h = document.getElementById('hamburger');
+    const m = document.getElementById('mobile-menu');
+    h.classList.toggle('open');
+    m.classList.toggle('open');
+    document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+  }
 </script>
 </body>
 </html>
